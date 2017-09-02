@@ -1,0 +1,16 @@
+<% if user_signed_in? %>
+  <div class="ui secondary pointing menu navbar-bg">
+    <%= link_to 'Home', root_path, class: 'ui item' %>
+    <%= link_to 'Accounts', accounts_path, class: 'ui item' %>
+    <%= link_to 'Profile', accounts_path, class: 'ui item' %> <!-- changing "accounts_path" to "account_profiles_path" breaks everything saying it's missing an ID, but I can't figure out how to get that connected to this path -->
+    <div class="right menu">
+      <%= link_to 'Log_out', destroy_user_session_path, method: :delete, class: 'ui item' %>
+    </div>
+  </div>
+
+<% else %>
+  <div class="ui secondary pointing menu navbar-bg">
+    <%= link_to 'Sign In', new_user_session_path, class: 'ui item' %>
+    <%= link_to 'Sign Up', new_user_registration_path, class: 'ui item' %>
+  </div>
+<% end %>

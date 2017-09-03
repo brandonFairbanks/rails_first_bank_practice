@@ -1,31 +1,49 @@
 class ProfilesController < ApplicationController
     before_action :set_account
-    before_action :set_topic, only: [:show, :edit, :update]
+    before_action :set_profile, only: [:show, :edit, :update, :destroy]
 
     def index
-        @profiles = @accounts.profiles
+        @profiles = current_user.profile
     end
 
     def show
     end
 
     def new
-        @profiles = @account.profiles.new
+        @profile = @account.profiles.new
+        render partial: 'form'
+    end
+
+    def edit
+        render partial: 'form'
     end
 
     def create 
-        @profiles = @acccount.profiles.new(profile_params)
+        @profile = @account.profiles.new(profile_params)
 
-        if @profiles.save
-            redirect_to [@acconunt, @profile]
+        if @profile.save
+            redirect_to [@account, @profile]
         else
             render :edit
         end
     end
 
+    def update
+        if @profile.update(profile_params)
+            redirect_to [@account, @profile]
+        else
+            render :edit
+        end
+    end
+
+    def destroy
+        @profile.destroy
+        redirect_to account_profiles_path
+    end
+
     private
     def set_account 
-        @account = Account.find(params[:id])
+        @account = Account.find(params[:account_id])
     end
 
     def set_profile
@@ -33,6 +51,6 @@ class ProfilesController < ApplicationController
     end
 
     def profile_params
-        params.require(:topic).permit(:first_name, :last_name, :email)
+        params.require(:profile).permit(:first_name, :last_name, :email)
     end
 end
